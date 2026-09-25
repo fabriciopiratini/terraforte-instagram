@@ -78,6 +78,10 @@ criando a consciência de que **imóvel irregular é risco financeiro** — e a 
 ## Fluxo de publicação
 Claude cria → usuário aprova no chat → Claude publica. Nunca publicar sem aprovação explícita do post.
 
+## Git
+Repositório privado: github.com/fabriciopiratini/terraforte-instagram (branch `main`).
+Skill criada, alterada ou atualizada → commit + push automático. Demais mudanças, só quando o usuário pedir.
+
 ## Formato de arquivo de post
 ```
 Status: rascunho | aprovado | publicado
