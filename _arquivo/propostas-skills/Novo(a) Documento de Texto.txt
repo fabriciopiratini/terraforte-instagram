@@ -1,0 +1,46 @@
+Aqui está um resumo estruturado com base nas fontes do seu caderno sobre o funcionamento, a arquitetura e os fluxos de trabalho para **criação de conteúdo** utilizando o **Claude Code**:
+
+---
+
+### **1. Estrutura de Arquivos e Identidade de Marca**
+* **Arquivos de Sistema (`CLAUDE.md` / `brand-voice.md`)**: O Claude Code funciona como um orquestrador central que lê diretrizes do projeto antes de gerar qualquer peça de conteúdo. Arquivos específicos determinam o tom de voz, regras de formatação (ex.: proibir travessões `m-dashes` ou excesso de emojis), pilares de conteúdo, termos proibidos e regras visuais.
+* **Skills Reutilizáveis (`.claude/skills/`)**: Módulos e instruções em arquivos `.md` salvos no diretório de skills que permitem acionar tarefas recorrentes por meio de comandos simples (ex.: `/instagram-carousel` ou `/reels-script`). As skills guiam a IA na estrutura slide a slide, no estilo de escrita e na execução de rotinas específicas.
+
+---
+
+### **2. Formatos de Conteúdo e Fluxos de Criação**
+
+* **Carrosséis para Instagram (HTML \\(\rightarrow\\) PNG 1080x1350)**:
+  * **Desenvolvimento Visual**: Em vez de usar modelos prontos no Canva, o Claude Code gera o conteúdo escrevendo código HTML/CSS estilizado (incluindo estilos como o *estilo Tweet/X* ou *múltiplos layouts personalizados*).
+  * **Exportação via Playwright/Python**: Um script Python com a biblioteca Playwright tira screenshots das telas em alta resolução (1080x1350 px), gerando os arquivos PNG prontos para postagem.
+  * **Anatomia do Carrossel**: A IA estrutura os slides focando em um **Gancho/Capa** (que retém até 70% da atenção), **Desenvolvimento/Tensão**, **Clímax/Valor** e **CTA (Call to Action)**.
+
+* **Vídeos Curtos (Reels / Shorts / TikTok)**:
+  * **Geração de Roteiros**: Skills focadas em roteirização (`real-scriptor`) definem o gancho de abertura, ritmo, indicações visuais e clímax emocional.
+  * **Edição Automatizada**: Uso de scripts em Python que processam o vídeo via CLI/APIs (removendo palavras de preenchimento, aplicando zoom automático, adicionando marca d'água e ajustando legendas).
+
+* **Legendas (Captions) e CTAs**:
+  * Geração em lote baseada em arquivos de entrada ou transcrições de vídeos do YouTube/podcasts, vinculando ganchos com direcionamento para DMs automatizadas.
+
+---
+
+### **3. Ferramentas, APIs e Integração MCP**
+
+* **Geração Visual e B-Roll**:
+  * Conexão via **MCP (Model Context Protocol)** com serviços como **Hicksfield**, **Nano Banana Pro** e **ChatGPT Image 2** para gerar imagens e backgrounds sincronizados no mesmo fluxo de conversa.
+  * Integração com **Serper API** para busca e inserção automática de imagens públicas do Google diretamente nos carrosséis HTML.
+
+* **Automação de Publicação e DMs**:
+  * **Plataformas de Agendamento**: Integração direta com ferramentas como **Blotato** e **Metricool** via API/MCP para agendar e postar conteúdo em múltiplas redes (Instagram, LinkedIn, X, Facebook).
+  * **Substituição do ManyChat (Meta API Oficial)**: Configuração de webhooks com **Supabase** e a API oficial do Instagram/Meta para responder comentários e enviar DMs automatizadas com botões e gatilhos de palavras-chave.
+
+---
+
+### **4. Qualidade e Fluxo "Human-in-the-Loop"**
+* **Preview Navegável**: O Claude Code gera um arquivo HTML local antes da publicação para que o usuário possa visualizar o design diretamente no navegador ou no painel de prévia.
+* **Portas de Qualidade (Quality Gates)**: Scripts executados antes do envio final verificam limites de caracteres por rede social, contagem de emojis e ausência de ruídos na formatação.
+* **Aprovação Manual**: O fluxo é configurado para exigir a aprovação do usuário após a geração dos rascunhos, disparando a chamada de publicação via API somente após confirmação.
+
+---
+
+💡 **Sugestão de próximo passo**: Quer que eu monte um arquivo de diretrizes **`CLAUDE.md`** ou uma **skill pronta (`.md`)** para criação de carrosséis no Instagram adaptada para o seu nicho?

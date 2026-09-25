@@ -1,0 +1,16 @@
+# Credenciais — nunca versionar
+.env
+*.env
+
+# Logs e temporários
+ferramentas/publicacoes.log
+__pycache__/
+*.pyc
+
+# Configuração local do Claude Code
+.claude/settings.local.json
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store

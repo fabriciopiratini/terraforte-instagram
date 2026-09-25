@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+  :root { --marrom:#522800; --amarelo:#FFCB2A; --verde:#059734; --branco:#FFFFFF; --preto:#1a1a1a; --creme:#F6F1EA; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:1080px; height:1350px; overflow:hidden; font-family:'Montserrat', Arial, sans-serif; }
+  .slide { width:1080px; height:1350px; position:relative; padding:110px 90px; display:none; flex-direction:column; }
+  .slide.ativo { display:flex; }
+  .marrom { background:var(--marrom); color:var(--branco); }
+  .creme  { background:var(--creme); color:var(--marrom); }
+  .verde  { background:var(--verde); color:var(--branco); }
+
+  .rodape { position:absolute; left:90px; right:90px; bottom:70px; display:flex; align-items:center; justify-content:space-between; font-size:26px; font-weight:500; opacity:.9; }
+  .rodape img { height:86px; }
+  .pag { letter-spacing:4px; }
+
+  h1 { font-weight:800; font-size:104px; line-height:1.05; letter-spacing:-2px; }
+  h2 { font-weight:800; font-size:76px; line-height:1.1; letter-spacing:-1px; }
+  .dest { color:var(--amarelo); }
+  .dest-verde { color:var(--verde); }
+  .ital { font-family:'Playfair Display', Georgia, serif; font-style:italic; font-weight:700; }
+  .linha { width:140px; height:10px; background:var(--amarelo); border-radius:5px; margin:50px 0; }
+  .sub { font-size:44px; font-weight:500; line-height:1.35; }
+
+  /* slide 1 */
+  .capa-logo { width:260px; margin-bottom:auto; }
+  .arraste { font-size:30px; font-weight:700; color:var(--amarelo); margin-top:60px; letter-spacing:2px; }
+
+  /* slide 2 */
+  .travas { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; margin-top:70px; }
+  .trava { background:var(--branco); border-radius:24px; padding:36px 28px; display:flex; align-items:center; gap:20px; font-size:36px; font-weight:700; box-shadow:0 6px 0 rgba(82,40,0,.12); }
+  .trava svg { flex:none; }
+  .nota { margin-top:70px; font-size:38px; line-height:1.4; font-weight:500; }
+
+  /* slide 3 */
+  .servicos { margin-top:60px; display:flex; flex-direction:column; gap:22px; }
+  .serv { display:flex; align-items:center; gap:26px; font-size:40px; font-weight:700; padding-bottom:22px; border-bottom:2px solid rgba(82,40,0,.12); }
+  .serv:last-child { border-bottom:none; }
+  .bola { width:22px; height:22px; border-radius:50%; background:var(--verde); flex:none; }
+
+  /* slide 4 */
+  .numero { font-size:260px; font-weight:800; line-height:.9; color:var(--amarelo); letter-spacing:-8px; }
+  .passos { margin-top:80px; display:flex; flex-direction:column; gap:36px; }
+  .passo { display:flex; align-items:center; gap:30px; font-size:42px; font-weight:700; }
+  .passo span { width:84px; height:84px; border-radius:50%; border:4px solid var(--amarelo); color:var(--amarelo); display:flex; align-items:center; justify-content:center; font-size:40px; flex:none; }
+
+  /* slide 5 */
+  .marca-caixa { background:var(--creme); border-radius:40px; padding:40px 50px; margin:0 auto 70px; }
+  .marca-nome { width:560px; display:block; }
+  .cta { text-align:center; }
+  .cta h2 { font-size:72px; }
+  .botao { display:inline-block; margin-top:60px; background:var(--amarelo); color:var(--marrom); font-size:44px; font-weight:800; padding:30px 60px; border-radius:60px; }
+  .contato { margin-top:80px; font-size:34px; line-height:1.6; font-weight:500; text-align:center; }
+</style>
+</head>
+<body>
+
+<!-- 1 · CAPA -->
+<section class="slide marrom">
+  <img class="capa-logo" src="../../../marca/logo.png" alt="">
+  <h1><span class="dest">13 anos</span><br>cuidando do<br>que é seu.</h1>
+  <div class="linha"></div>
+  <p class="sub">Conheça a <span class="ital dest">Terra Forte</span>.</p>
+  <p class="arraste">ARRASTE PARA O LADO →</p>
+</section>
+
+<!-- 2 · PROBLEMA -->
+<section class="slide creme">
+  <h2>Documento diferente da realidade <span class="dest-verde">trava</span> o seu negócio.</h2>
+  <div class="travas">
+    <div class="trava"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#522800" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 8l8 8M16 8l-8 8"/></svg>Venda</div>
+    <div class="trava"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#522800" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 8l8 8M16 8l-8 8"/></svg>Financiamento</div>
+    <div class="trava"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#522800" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 8l8 8M16 8l-8 8"/></svg>Arrendamento</div>
+    <div class="trava"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#522800" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 8l8 8M16 8l-8 8"/></svg>Inventário</div>
+  </div>
+  <p class="nota">E muitas vezes o proprietário só descobre o problema <b>na hora de fechar o negócio.</b></p>
+  <div class="rodape"><img src="../../../marca/logo.png" alt=""><span class="pag">2 / 5</span></div>
+</section>
+
+<!-- 3 · SERVIÇOS -->
+<section class="slide creme">
+  <h2>O que a <span class="dest-verde">Terra Forte</span> faz</h2>
+  <div class="servicos">
+    <div class="serv"><i class="bola"></i>Georreferenciamento</div>
+    <div class="serv"><i class="bola"></i>Localização de parcela</div>
+    <div class="serv"><i class="bola"></i>Extinção de condomínio</div>
+    <div class="serv"><i class="bola"></i>Topografia rural e urbana</div>
+    <div class="serv"><i class="bola"></i>Regularização urbana</div>
+    <div class="serv"><i class="bola"></i>CAR</div>
+    <div class="serv"><i class="bola"></i>Detalhamento de lavoura com drone</div>
+    <div class="serv"><i class="bola"></i>Estruturação de crédito bancário</div>
+  </div>
+  <div class="rodape"><img src="../../../marca/logo.png" alt=""><span class="pag">3 / 5</span></div>
+</section>
+
+<!-- 4 · COMO FAZEMOS -->
+<section class="slide marrom">
+  <div class="numero">13</div>
+  <h2>anos de experiência<br>+ equipamentos de<br><span class="dest">última geração.</span></h2>
+  <div class="passos">
+    <div class="passo"><span>1</span>Medimos a área em campo</div>
+    <div class="passo"><span>2</span>Organizamos a documentação</div>
+    <div class="passo"><span>3</span>Acompanhamos até o registro</div>
+  </div>
+  <div class="rodape"><img src="../../../marca/logo.png" alt=""><span class="pag">4 / 5</span></div>
+</section>
+
+<!-- 5 · CTA -->
+<section class="slide verde cta" style="justify-content:center;">
+  <div class="marca-caixa"><img class="marca-nome" src="../../../marca/PNG.png" alt="Terra Forte"></div>
+  <h2>Seu imóvel está pronto<br>para o próximo negócio?</h2>
+  <div><span class="botao">Fale com a Terra Forte</span></div>
+  <p class="contato">(53) 99969.1909<br>Av. Maurício Cardoso, 843 · 2º piso<br>Piratini/RS e região</p>
+</section>
+
+<script>
+  const n = parseInt(new URLSearchParams(location.search).get('s') || '1', 10);
+  document.querySelectorAll('.slide')[n - 1].classList.add('ativo');
+</script>
+</body>
+</html>
