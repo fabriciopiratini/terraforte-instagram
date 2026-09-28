@@ -18,3 +18,4 @@ desktop.ini
 # Materiais gerados e mídia bruta — backup fora do git (ex.: Drive)
 posts/**/*.png
 midia/
+~$*

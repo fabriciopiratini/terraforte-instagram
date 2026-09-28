@@ -11,6 +11,10 @@ Esta skill define como criar roteiros de spots publicitários e conteúdo para a
 - Citar SEMPRE como "Terra Forte" (sem "Engenharia").
 - Em TODOS os textos, roteiros, menções e assinaturas: apenas "Terra Forte".
 
+## Onde salvar
+- Projeto: `posts/radio/AAAA-MM/` — `.md` (contexto + texto) e `.docx` (formato da rádio).
+- Cópia do `.docx` em `D:\_ESCRITÓRIO_\_SERVIÇOS_\_ARQUIVOS_AUXILIARES_\ESCRITÓRIO\MARKETING\RÁDIO`. Nunca sobrescrever os arquivos que já estão lá (ex.: `PROPAGANDA GRAVADA_N.docx`, editados pelo usuário).
+
 ## Padrão de formatação dos textos gravados (especificação da rádio)
 
 ### Formatação técnica (OBRIGATÓRIO — padrão da Nativa FM)

@@ -68,6 +68,9 @@ criando a consciência de que **imóvel irregular é risco financeiro** — e a 
 - `marca/` — Manual de Voz e Planejamento Estratégico (PDFs originais)
 - `calendario/` — um arquivo por mês: `AAAA-MM.md`
 - `posts/AAAA-MM/` — um arquivo por post: `AAAA-MM-DD-tema-curto.md`
+- `posts/radio/AAAA-MM/` — spots de rádio (.md + .docx)
+- Cópias no servidor do escritório (`D:\_ESCRITÓRIO_\_SERVIÇOS_\_ARQUIVOS_AUXILIARES_\ESCRITÓRIO\MARKETING\`):
+  Instagram aprovado → `NOVO INSTAGRAM\PUBLI_N` (próximo número livre; PUBLI_1 = Terra Brasil) · rádio → `RÁDIO`
 - `midia/{campo,escritorio,equipe,eventos}/` — fotos e vídeos brutos
 - `_arquivo/` — arquivos antigos/fora de uso (não usar como referência)
 - `marca/logo.png` (símbolo redondo) · `marca/PNG.png` (logo com nome) · `marca/NOVO ENDEREÇO.jpeg` (contatos)

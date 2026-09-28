@@ -54,3 +54,4 @@ Antes de usar foto de `midia/`, confira: sem placa, rosto de cliente, documento,
 4. Corrigir só os slides apontados e renderizar de novo.
 5. **Toda publicação tem legenda:** com a arte aprovada, ajustar `## Legenda` do .md ao texto final dos slides (mesmo CTA, contato, máx. 5 hashtags) e apresentar ao usuário.
 6. Com arte e legenda aprovadas → rodar `revisao-conteudo-terraforte` → publicar com `publicar-instagram-terraforte`.
+7. **Cópia no servidor do escritório:** com arte e legenda aprovadas, copiar os PNGs e a legenda para `D:\_ESCRITÓRIO_\_SERVIÇOS_\_ARQUIVOS_AUXILIARES_\ESCRITÓRIO\MARKETING\NOVO INSTAGRAM\PUBLI_N`, criando a pasta com o próximo número livre (PUBLI_1 = Terra Brasil). Conferir as pastas existentes antes de numerar.
