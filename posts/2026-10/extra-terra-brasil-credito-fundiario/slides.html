@@ -6,59 +6,60 @@
 <style>
   :root { --marrom:#522800; --amarelo:#FFCB2A; --verde:#059734; --branco:#FFFFFF; --creme:#F6F1EA; }
   * { box-sizing:border-box; margin:0; padding:0; }
-  html, body { width:1080px; height:1350px; overflow:hidden; font-family:'Montserrat', Arial, sans-serif; }
-  .slide { width:1080px; height:1350px; position:relative; padding:110px 90px; display:none; flex-direction:column; }
+  html, body { width:1080px; height:1080px; overflow:hidden; font-family:'Montserrat', Arial, sans-serif; }
+  .slide { width:1080px; height:1080px; position:relative; padding:80px 90px 150px; display:none; flex-direction:column; }
   .slide.ativo { display:flex; }
   .marrom { background:var(--marrom); color:var(--branco); }
   .creme  { background:var(--creme); color:var(--marrom); }
   .verde  { background:var(--verde); color:var(--branco); }
 
-  .rodape { position:absolute; left:90px; right:90px; bottom:70px; display:flex; align-items:center; justify-content:space-between; font-size:26px; font-weight:500; opacity:.9; }
-  .rodape img { height:86px; }
+  .rodape { position:absolute; left:90px; right:90px; bottom:50px; display:flex; align-items:center; justify-content:space-between; font-size:26px; font-weight:500; opacity:.9; }
+  .rodape img { height:70px; }
   .pag { letter-spacing:4px; }
 
-  h1 { font-weight:800; font-size:96px; line-height:1.05; letter-spacing:-2px; }
-  h2 { font-weight:800; font-size:72px; line-height:1.1; letter-spacing:-1px; }
+  h1 { font-weight:800; font-size:84px; line-height:1.05; letter-spacing:-2px; }
+  h2 { font-weight:800; font-size:62px; line-height:1.1; letter-spacing:-1px; }
   .dest { color:var(--amarelo); }
   .dest-verde { color:var(--verde); }
   .ital { font-family:'Playfair Display', Georgia, serif; font-style:italic; font-weight:700; }
-  .linha { width:140px; height:10px; background:var(--amarelo); border-radius:5px; margin:50px 0; }
-  .sub { font-size:44px; font-weight:500; line-height:1.35; }
+  .linha { width:140px; height:10px; background:var(--amarelo); border-radius:5px; margin:34px 0; }
+  .sub { font-size:40px; font-weight:500; line-height:1.35; }
   .tag { font-size:28px; font-weight:700; letter-spacing:4px; color:var(--amarelo); margin-bottom:30px; }
   .creme .tag { color:var(--verde); }
 
   /* capa */
-  .capa-logo { width:240px; margin-bottom:auto; }
-  .arraste { font-size:30px; font-weight:700; color:var(--amarelo); margin-top:60px; letter-spacing:2px; }
+  .capa-logo { width:170px; margin-bottom:auto; }
+  .arraste { font-size:28px; font-weight:700; color:var(--amarelo); margin-top:40px; letter-spacing:2px; }
 
   /* o que é */
-  .icone-grande { margin:70px 0 60px; }
-  .texto { font-size:42px; line-height:1.45; font-weight:500; }
+  .icone-grande { margin:40px 0 36px; }
+  .icone-grande svg { width:120px; height:120px; }
+  .texto { font-size:38px; line-height:1.45; font-weight:500; }
 
   /* itens */
-  .itens { margin-top:70px; display:flex; flex-direction:column; gap:30px; }
-  .item { background:var(--branco); border-radius:24px; padding:36px 36px; display:flex; align-items:center; gap:30px; box-shadow:0 6px 0 rgba(82,40,0,.12); }
+  .itens { margin-top:44px; display:flex; flex-direction:column; gap:22px; }
+  .item { background:var(--branco); border-radius:24px; padding:24px 36px; display:flex; align-items:center; gap:30px; box-shadow:0 6px 0 rgba(82,40,0,.12); }
   .item svg { flex:none; }
-  .item b { display:block; font-size:42px; font-weight:800; }
-  .item span { display:block; font-size:34px; font-weight:500; margin-top:6px; opacity:.85; }
+  .item b { display:block; font-size:38px; font-weight:800; }
+  .item span { display:block; font-size:30px; font-weight:500; margin-top:6px; opacity:.85; }
 
   /* atenção */
-  .alerta { width:150px; height:150px; border-radius:50%; background:var(--amarelo); display:flex; align-items:center; justify-content:center; margin-bottom:70px; }
-  .igual { margin-top:80px; display:flex; flex-direction:column; align-items:center; gap:6px; font-size:58px; font-weight:800; line-height:1.15; border:5px solid var(--amarelo); border-radius:30px; padding:44px 40px; }
-  .igual .sinal { color:var(--amarelo); font-size:80px; line-height:1; }
+  .alerta { width:120px; height:120px; border-radius:50%; background:var(--amarelo); display:flex; align-items:center; justify-content:center; margin-bottom:44px; }
+  .igual { margin-top:50px; display:flex; flex-direction:column; align-items:center; gap:6px; font-size:50px; font-weight:800; line-height:1.15; border:5px solid var(--amarelo); border-radius:30px; padding:30px 40px; }
+  .igual .sinal { color:var(--amarelo); font-size:66px; line-height:1; }
 
   /* passos */
-  .passos { margin-top:70px; display:flex; flex-direction:column; gap:44px; }
-  .passo { display:flex; align-items:center; gap:34px; font-size:42px; font-weight:700; line-height:1.25; }
-  .passo span { width:90px; height:90px; border-radius:50%; border:4px solid var(--amarelo); color:var(--amarelo); display:flex; align-items:center; justify-content:center; font-size:42px; flex:none; }
+  .passos { margin-top:50px; display:flex; flex-direction:column; gap:32px; }
+  .passo { display:flex; align-items:center; gap:34px; font-size:38px; font-weight:700; line-height:1.25; }
+  .passo span { width:80px; height:80px; border-radius:50%; border:4px solid var(--amarelo); color:var(--amarelo); display:flex; align-items:center; justify-content:center; font-size:42px; flex:none; }
 
   /* cta */
-  .marca-caixa { background:var(--creme); border-radius:40px; padding:40px 50px; margin:0 auto 70px; }
-  .marca-nome { width:540px; display:block; }
+  .marca-caixa { background:var(--creme); border-radius:40px; padding:30px 44px; margin:0 auto 44px; }
+  .marca-nome { width:440px; display:block; }
   .cta { text-align:center; }
-  .cta h2 { font-size:66px; }
-  .botao { display:inline-block; margin-top:60px; background:var(--amarelo); color:var(--marrom); font-size:42px; font-weight:800; padding:30px 56px; border-radius:60px; }
-  .contato { margin-top:70px; font-size:34px; line-height:1.6; font-weight:500; }
+  .cta h2 { font-size:58px; }
+  .botao { display:inline-block; margin-top:40px; background:var(--amarelo); color:var(--marrom); font-size:42px; font-weight:800; padding:30px 56px; border-radius:60px; }
+  .contato { margin-top:40px; font-size:30px; line-height:1.6; font-weight:500; }
 </style>
 </head>
 <body>
@@ -74,7 +75,7 @@
 </section>
 
 <!-- 2 · O QUE É -->
-<section class="slide creme">
+<section class="slide creme" style="justify-content:center;">
   <p class="tag">O QUE É</p>
   <h2>Uma linha de crédito para o agricultor <span class="dest-verde">comprar o seu imóvel rural.</span></h2>
   <div class="icone-grande">
@@ -85,7 +86,7 @@
 </section>
 
 <!-- 3 · O QUE FINANCIA -->
-<section class="slide creme">
+<section class="slide creme" style="justify-content:center;">
   <p class="tag">O QUE PODE SER FINANCIADO</p>
   <h2>Não é só a terra.</h2>
   <div class="itens">
@@ -116,7 +117,7 @@
 </section>
 
 <!-- 5 · COMO A TERRA FORTE AJUDA -->
-<section class="slide verde">
+<section class="slide verde" style="justify-content:center;">
   <p class="tag">COMO A TERRA FORTE AJUDA?</p>
   <h2>Deixamos o imóvel pronto para o programa.</h2>
   <div class="passos">
@@ -128,7 +129,7 @@
 </section>
 
 <!-- 6 · CTA -->
-<section class="slide marrom cta" style="justify-content:center;">
+<section class="slide marrom cta" style="justify-content:center; padding-bottom:80px;">
   <div class="marca-caixa"><img class="marca-nome" src="../../../marca/PNG.png" alt="Terra Forte"></div>
   <h2>Vai comprar ou vender<br>terra pelo <span class="dest">Terra Brasil?</span></h2>
   <div><span class="botao">Fale com a Terra Forte!</span></div>

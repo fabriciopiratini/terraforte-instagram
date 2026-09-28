@@ -14,3 +14,7 @@ __pycache__/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Materiais gerados e mídia bruta — backup fora do git (ex.: Drive)
+posts/**/*.png
+midia/
