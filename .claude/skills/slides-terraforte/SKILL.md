@@ -8,10 +8,10 @@ description: Use esta skill sempre que precisar criar a arte de um post da Terra
 Fluxo padrão: texto do post aprovado → `slides.html` → PNGs → revisão → publicação.
 
 ## Onde fica cada coisa
-- Post: `posts/AAAA-MM/AAAA-MM-DD-tema.md` (seção `## Arte` é o roteiro dos slides)
-- Arte: pasta com o **mesmo nome** do .md → `posts/AAAA-MM/AAAA-MM-DD-tema/slides.html`
-- PNGs: `python ferramentas/gerar_slides.py posts/AAAA-MM/AAAA-MM-DD-tema` → `slide-01.png`, `slide-02.png`…
-- Modelo de referência: `posts/2026-10/2026-10-01-quem-e-a-terra-forte/slides.html` — **copie e adapte**, não comece do zero.
+- Post: `posts/instagram/AAAA-MM/AAAA-MM-DD-tema.md` (seção `## Arte` é o roteiro dos slides)
+- Arte: pasta com o **mesmo nome** do .md → `posts/instagram/AAAA-MM/AAAA-MM-DD-tema/slides.html`
+- PNGs: `python ferramentas/gerar_slides.py posts/instagram/AAAA-MM/AAAA-MM-DD-tema` → `slide-01.png`, `slide-02.png`…
+- Modelo de referência: `posts/instagram/2026-10/2026-10-01-quem-e-a-terra-forte/slides.html` — **copie e adapte**, não comece do zero.
 
 ## Identidade fixa (não perguntar ao usuário)
 | Token | Valor | Uso |
@@ -27,7 +27,7 @@ Fluxo padrão: texto do post aprovado → `slides.html` → PNGs → revisão �
 ## Regras técnicas do modelo
 - Cada slide é `<section class="slide ...">`; o script conta as seções e renderiza `?s=1`, `?s=2`…
 - Canvas real de **1080x1350** (não escalar). Tamanhos mínimos: título 72px, texto 36px, rodapé 26px — público de 35 a 65+ lê no celular.
-- Caminhos relativos a partir da pasta do post: `../../../marca/logo.png`, `../../../midia/campo/foto.jpg`.
+- Caminhos relativos a partir da pasta do post: `../../../../marca/logo.png`, `../../../../midia/campo/foto.jpg`.
 - Rodapé (logo + "2 / 6") em todos os slides menos capa e CTA.
 - Capa termina com "ARRASTE PARA O LADO →"; último slide não tem.
 - Alternar fundos (marrom → creme → creme → marrom/foto → verde → CTA) para dar ritmo.
