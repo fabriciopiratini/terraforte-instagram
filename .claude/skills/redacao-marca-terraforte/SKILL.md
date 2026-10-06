@@ -45,8 +45,15 @@ A Terra Forte comunica com **autoridade técnica** e **proximidade humana**. Som
 
 [CTA — chamada para ação clara]
 
+📞 (53) 99969.1909
+📍 Av. Maurício Cardoso, 843 · 2º piso · Piratini/RS
+
 [HASHTAGS — bloco separado]
 ```
+
+- Sempre na **1ª pessoa do plural** ("nós, o escritório Terra Forte"): medimos, cuidamos, acompanhamos.
+- **Não citar o Fabrício pelo nome** nos posts do Instagram.
+- O bloco de contato (📞 e 📍) vai em toda legenda, logo antes das hashtags. Ele já usa 2 dos 3 emojis permitidos.
 
 **Exemplo:**
 ```
@@ -56,9 +63,11 @@ Muitos proprietários ainda não sabem, mas o prazo está correndo. O georrefere
 
 Sem ele, você não consegue vender, transferir ou financiar sua terra.
 
-A Terra Forte cuida de todo o processo — do levantamento em campo até a entrega no INCRA e no cartório.
+Aqui na Terra Forte, cuidamos de todo o processo — do levantamento em campo até a entrega no INCRA e no cartório.
 
 Fale com a nossa equipe e regularize sua propriedade.
+📞 (53) 99969.1909
+📍 Av. Maurício Cardoso, 843 · 2º piso · Piratini/RS
 
 #TerraForte #Georreferenciamento #ImóvelRural #RegularizaçãoRural #Piratini #Pelotas #Agro
 ```

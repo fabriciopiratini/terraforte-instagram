@@ -61,6 +61,8 @@ Ao revisar um post de Instagram (legenda + arte), verificar TODOS os itens:
 ### 3. Precisão
 - [ ] Informações corretas?
 - [ ] Nomes citados estão entre os autorizados no CLAUDE.md (Fabrício Lucas, Milena Lucas, Aloncio Garcia)?
+- [ ] Instagram: texto na 1ª pessoa do plural, sem citar o Fabrício pelo nome?
+- [ ] Instagram: bloco de contato (📞 telefone · 📍 endereço) antes das hashtags?
 - [ ] Serviço descrito corretamente?
 
 ## Como apresentar a revisão
