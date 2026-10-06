@@ -2,10 +2,11 @@
 
 Uso:
   python ferramentas/publicar_instagram.py --testar
-  python ferramentas/publicar_instagram.py --renovar-token
-  python ferramentas/publicar_instagram.py posts/2026-10/2026-10-06-tema.md            (só verifica)
-  python ferramentas/publicar_instagram.py posts/2026-10/2026-10-06-tema.md --publicar
-  python ferramentas/publicar_instagram.py posts/2026-10/2026-10-06-tema.md --agendar 2026-10-06T06:30
+  python ferramentas/publicar_instagram.py --renovar-token      (também reagenda o lembrete)
+  python ferramentas/publicar_instagram.py --lembrete-token     (token novo: avisa na tela 7 dias antes de vencer)
+  python ferramentas/publicar_instagram.py posts/instagram/2026-10/2026-10-06-tema.md            (só verifica)
+  python ferramentas/publicar_instagram.py posts/instagram/2026-10/2026-10-06-tema.md --publicar
+  python ferramentas/publicar_instagram.py posts/instagram/2026-10/2026-10-06-tema.md --agendar 2026-10-06T06:30
 
 Imagens: slide-*.png na pasta com o mesmo nome do .md (1 imagem = feed, 2 a 10 = carrossel).
 Credenciais: .env na raiz do projeto (INSTAGRAM_TOKEN). O token nunca é impresso.
@@ -17,7 +18,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import requests
@@ -197,17 +198,53 @@ def renovar_token() -> None:
     ENV.write_text(texto, encoding="utf-8")
     dias = int(novo.get("expires_in", 0)) // 86400
     log(f"TOKEN renovado — válido por {dias} dias.")
+    if dias > 7:
+        lembrete_token(dias)
+
+
+def lembrete_token(dias: int) -> None:
+    """Agenda no Windows um aviso na tela 7 dias antes de o token vencer (substitui o anterior)."""
+    quando = datetime.now().replace(hour=9, minute=0, second=0, microsecond=0) + timedelta(days=dias - 7)
+    exe = Path(sys.executable).with_name("pythonw.exe")  # sem janela de console
+    exe = exe if exe.exists() else Path(sys.executable)
+    nome = "TerraForte-Lembrete-Token"
+    cmd = (
+        f"$a = New-ScheduledTaskAction -Execute '{exe}' "
+        f"-Argument '\"{Path(__file__).resolve()}\" --aviso-token' -WorkingDirectory '{RAIZ}'; "
+        f"$t = New-ScheduledTaskTrigger -Once -At ([datetime]'{quando:%Y-%m-%dT%H:%M}'); "
+        f"$s = New-ScheduledTaskSettingsSet -StartWhenAvailable; "
+        f"Register-ScheduledTask -TaskName '{nome}' -Action $a -Trigger $t -Settings $s -Force | Out-Null"
+    )
+    subprocess.run(["powershell", "-NoProfile", "-Command", cmd], check=True)
+    log(f"LEMBRETE do token agendado para {quando:%d/%m/%Y %H:%M} (token vence em ~{dias} dias)")
+
+
+def aviso_token() -> None:
+    import ctypes
+    texto = ("O token do Instagram da Terra Forte vence em 7 dias.\n\n"
+             "Peça ao Claude no projeto TerraForte_Marketing: \"renovar token\".")
+    ctypes.windll.user32.MessageBoxW(0, texto, "Terra Forte — Instagram", 0x30 | 0x40000)  # alerta, sempre no topo
 
 
 def main() -> None:
-    sys.stdout.reconfigure(encoding="utf-8")
+    if sys.stdout:  # None quando roda via pythonw (lembrete agendado)
+        sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser()
     p.add_argument("post", nargs="?", type=Path)
     p.add_argument("--publicar", action="store_true")
     p.add_argument("--agendar", metavar="AAAA-MM-DDTHH:MM")
     p.add_argument("--testar", action="store_true")
     p.add_argument("--renovar-token", action="store_true")
+    p.add_argument("--lembrete-token", nargs="?", const=60, type=int, metavar="DIAS_ATE_VENCER")
+    p.add_argument("--aviso-token", action="store_true", help=argparse.SUPPRESS)
     a = p.parse_args()
+
+    if a.aviso_token:
+        aviso_token()
+        return
+    if a.lembrete_token:
+        lembrete_token(a.lembrete_token)
+        return
 
     if a.testar or a.renovar_token or a.publicar:
         ENV_DADOS.update(ler_env())

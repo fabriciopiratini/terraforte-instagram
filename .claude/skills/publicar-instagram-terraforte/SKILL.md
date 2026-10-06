@@ -21,7 +21,8 @@ description: Use esta skill para publicar ou agendar no Instagram da Terra Forte
 | `... <post.md> --publicar` | Publica agora |
 | `... <post.md> --agendar 2026-10-06T06:30` | Cria tarefa no Agendador do Windows que publica no horário |
 | `... --testar` | Mostra a conta conectada e o uso da cota |
-| `... --renovar-token` | Renova o token por mais 60 dias |
+| `... --renovar-token` | Renova o token por mais 60 dias e reagenda o lembrete |
+| `... --lembrete-token [dias]` | Agenda aviso na tela 7 dias antes de o token vencer (padrão: vence em 60 dias) |
 
 O script:
 - pega a legenda de `## Legenda` + `## Hashtags` e as imagens `slide-*.png` da pasta do post
@@ -47,8 +48,13 @@ Reels e stories: ainda não suportados pelo script — publicar pelo app.
 Pré-requisito: Instagram da Terra Forte como conta **Profissional** (Empresa ou Criador de conteúdo).
 
 1. Em `developers.facebook.com` → **Meus apps → Criar app** → caso de uso **"Gerenciar mensagens e conteúdo no Instagram"**.
+   - A conta de desenvolvedor pode ser um **Facebook pessoal** já com celular verificado (o Facebook "Terra Forte"
+     travou na verificação por SMS). App em uso: **"Agente Terra Forte"** no Facebook pessoal do usuário.
+   - App já existente: **Casos de uso → Adicionar** → filtro **Gerenciamento de conteúdo**.
 2. No app: **API do Instagram → Configuração da API com login do Instagram → Gerar tokens de acesso**
    → **Adicionar conta** → entrar com o Instagram da Terra Forte → autorizar.
+   - Se exigir função: **Funções do app → Adicionar pessoas → Testador do Instagram** → `terrafortegeo` (sem @);
+     aceitar em `instagram.com/accounts/manage_access/` → aba **Convites de testador**.
 3. Clicar em **Gerar token**, copiar.
 4. O **próprio usuário** cria o arquivo `.env` na raiz do projeto (`D:\PROGRAMAS_TF\VS_CODE\TerraForte_Marketing\.env`) com:
    ```
@@ -56,12 +62,15 @@ Pré-requisito: Instagram da Terra Forte como conta **Profissional** (Empresa ou
    META_API_VERSION=v26.0
    ```
 5. Claude roda `--testar` e confirma o @ da conta.
+6. Claude roda `--lembrete-token` (tarefa `TerraForte-Lembrete-Token` no Agendador: caixa de aviso às 9h,
+   7 dias antes de vencer, pedindo ao usuário que solicite "renovar token").
 
 ### Segurança do token (inegociável)
 - **Nunca** pedir para colar o token no chat. Se o usuário colar, avisar que ele deve gerar outro.
 - **Nunca** ler, exibir ou copiar o `.env` — só o script o lê.
 - O token vale 60 dias. Renovar com `--renovar-token` (precisa ter mais de 24h e não ter vencido).
-  Se vencer, repetir os passos 2–4.
+  Se vencer, repetir os passos 2–4 e depois `--lembrete-token`.
+  Token atual gerado em 06/10/2026 → vence ~05/12/2026 · lembrete em 28/11/2026.
 
 ## Erros comuns
 | Mensagem | Causa | O que fazer |
