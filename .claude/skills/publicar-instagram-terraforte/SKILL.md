@@ -50,7 +50,7 @@ Pré-requisito: Instagram da Terra Forte como conta **Profissional** (Empresa ou
 2. No app: **API do Instagram → Configuração da API com login do Instagram → Gerar tokens de acesso**
    → **Adicionar conta** → entrar com o Instagram da Terra Forte → autorizar.
 3. Clicar em **Gerar token**, copiar.
-4. O **próprio usuário** cria o arquivo `.env` na raiz do projeto (`D:\PROGRAMAS_TF\VS_CODE\Instagram\.env`) com:
+4. O **próprio usuário** cria o arquivo `.env` na raiz do projeto (`D:\PROGRAMAS_TF\VS_CODE\TerraForte_Marketing\.env`) com:
    ```
    INSTAGRAM_TOKEN=cole_aqui
    META_API_VERSION=v26.0
