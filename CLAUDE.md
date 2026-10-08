@@ -25,6 +25,7 @@ criando a consciência de que **imóvel irregular é risco financeiro** — e a 
 
 ## Equipe (nomes autorizados em posts)
 - Fabrício Lucas · Milena Lucas · Aloncio Garcia
+- Instagram: **não citar o Fabrício pelo nome** (o escritório fala como "nós").
 
 ## Fatos confirmados
 - CAR é exigido para o crédito rural e para o registro do imóvel no cartório.
@@ -42,6 +43,12 @@ criando a consciência de que **imóvel irregular é risco financeiro** — e a 
 - Mensagem central: o serviço não é simples, mas temos a competência para resolver.
 - Estrutura preferida: **problema do cliente → consequência → solução Terra Forte → CTA**.
 - Termo técnico só quando necessário, e sempre explicado.
+- Instagram: sempre na **1ª pessoa do plural** ("nós, o escritório Terra Forte": medimos, cuidamos, fazemos).
+- Legenda do Instagram termina com o bloco de contato, logo antes das hashtags:
+  ```
+  📞 (53) 99969.1909
+  📍 Av. Maurício Cardoso, 843 · 2º piso · Piratini/RS
+  ```
 
 ## Regras inegociáveis
 - Proibido: gírias, política, religião.
@@ -67,19 +74,25 @@ criando a consciência de que **imóvel irregular é risco financeiro** — e a 
 ## Mapa de pastas
 - `marca/` — Manual de Voz e Planejamento Estratégico (PDFs originais)
 - `calendario/` — um arquivo por mês: `AAAA-MM.md`
-- `posts/AAAA-MM/` — um arquivo por post: `AAAA-MM-DD-tema-curto.md`
+- `posts/instagram/AAAA-MM/` — um arquivo por post: `AAAA-MM-DD-tema-curto.md`
 - `posts/radio/AAAA-MM/` — spots de rádio (.md + .docx)
 - Cópias no servidor do escritório (`D:\_ESCRITÓRIO_\_SERVIÇOS_\_ARQUIVOS_AUXILIARES_\ESCRITÓRIO\MARKETING\`):
   Instagram aprovado → `NOVO INSTAGRAM\PUBLI_N` (próximo número livre; PUBLI_1 = Terra Brasil) · rádio → `RÁDIO`
 - `midia/{campo,escritorio,equipe,eventos}/` — fotos e vídeos brutos
 - `_arquivo/` — arquivos antigos/fora de uso (não usar como referência)
 - `marca/logo.png` (símbolo redondo) · `marca/PNG.png` (logo com nome) · `marca/NOVO ENDEREÇO.jpeg` (contatos)
-- `posts/AAAA-MM/<post>/slides.html` → PNGs com `python ferramentas/gerar_slides.py <pasta-do-post>` (arte padrão; Canva só para peças especiais)
+- `posts/instagram/AAAA-MM/<post>/slides.html` → PNGs com `python ferramentas/gerar_slides.py <pasta-do-post>` (arte padrão; Canva só para peças especiais)
 - `ferramentas/publicar_instagram.py` — publica/agenda post com `Status: aprovado` (credenciais em `.env`, nunca ler)
+- `ferramentas/painel.py` — painel da rede (`http://192.168.0.110:8080`; sobe sozinho no logon pela tarefa
+  `TerraForte-Painel`, Python 3.13 do sistema): aprovar, publicar, excluir (→ `_arquivo/`) e
+  pedidos de alteração, gravados em `## Pedidos de alteração` do .md; ao aplicar um pedido, marcar `- [x]`
 - `.claude/skills/` — skills da marca: redação, planejamento, slides (HTML), arte (Canva), publicação, revisão, notícias, rádio
 
 ## Fluxo de publicação
-Claude cria → usuário aprova no chat → Claude publica. Nunca publicar sem aprovação explícita do post.
+Claude cria → usuário aprova (chat ou painel) → publica. Nunca publicar sem aprovação explícita do post.
+- Botão Publicar do painel = publica na hora. Sem clique = o painel publica sozinho no horário da Data.
+- Horário perdido (PC desligado): ao ligar, o painel pergunta na tela antes de publicar.
+- Post marcado "publicado" nunca é republicado; desmarcado, só volta pelo botão Publicar.
 
 ## Git
 Repositório privado: github.com/fabriciopiratini/terraforte-instagram (branch `main`).
