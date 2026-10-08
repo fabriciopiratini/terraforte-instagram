@@ -31,6 +31,8 @@ O script:
   (1 imagem = feed; 2 a 10 = carrossel);
 - bloqueia se: status ≠ aprovado, legenda > 2.200 caracteres, **mais de 5 hashtags** (limite do Instagram),
   mais de 3 emojis, imagem fora de 1080x1350;
+- convida sempre os colaboradores fixos (`COLABORADORES` no script, máx. 3; cada um precisa aceitar o convite).
+  Um @ inválido ou privado faz a API recusar o post inteiro ("Invalid user id");
 - converte para JPEG (único formato aceito pela API) e hospeda por **1 hora** no litterbox — só o tempo de a Meta baixar;
 - depois de publicar, muda o .md para `Status: publicado` e grava a data e o link;
 - registra tudo em `ferramentas/publicacoes.log`.
