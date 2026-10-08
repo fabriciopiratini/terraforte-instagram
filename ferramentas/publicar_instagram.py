@@ -12,6 +12,7 @@ Imagens: slide-*.png na pasta com o mesmo nome do .md (1 imagem = feed, 2 a 10 =
 Credenciais: .env na raiz do projeto (INSTAGRAM_TOKEN). O token nunca é impresso.
 """
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -28,6 +29,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 ENV = RAIZ / ".env"
 LOG = RAIZ / "ferramentas" / "publicacoes.log"
 HOST = "https://graph.instagram.com"
+# colaboradores fixos de todo post (máx. 3 pela API); cada um recebe convite e precisa aceitar
+COLABORADORES = ["fabricio_glucas", "milenamedeirosdemattos"]  # conta privada não pode ser colaboradora
 
 LIMITE_LEGENDA = 2200
 LIMITE_HASHTAGS = 5   # regra do Instagram desde dez/2025
@@ -156,13 +159,15 @@ def publicar(md: Path) -> None:
     with tempfile.TemporaryDirectory() as t:
         urls = [hospedar(img, Path(t)) for img in imagens]
     if len(urls) == 1:
-        container = api("POST", f"{ig_id}/media", image_url=urls[0], caption=caption)["id"]
+        container = api("POST", f"{ig_id}/media", image_url=urls[0], caption=caption,
+                        collaborators=json.dumps(COLABORADORES))["id"]
     else:
         filhos = [api("POST", f"{ig_id}/media", image_url=u, is_carousel_item="true")["id"] for u in urls]
         for c in filhos:
             aguardar(c)
         container = api("POST", f"{ig_id}/media", media_type="CAROUSEL",
-                        children=",".join(filhos), caption=caption)["id"]
+                        children=",".join(filhos), caption=caption,
+                        collaborators=json.dumps(COLABORADORES))["id"]
     aguardar(container)
     media_id = api("POST", f"{ig_id}/media_publish", creation_id=container)["id"]
     link = api("GET", media_id, fields="permalink").get("permalink", media_id)
@@ -205,8 +210,9 @@ def renovar_token() -> None:
 def lembrete_token(dias: int) -> None:
     """Agenda no Windows um aviso na tela 7 dias antes de o token vencer (substitui o anterior)."""
     quando = datetime.now().replace(hour=9, minute=0, second=0, microsecond=0) + timedelta(days=dias - 7)
-    exe = Path(sys.executable).with_name("pythonw.exe")  # sem janela de console
-    exe = exe if exe.exists() else Path(sys.executable)
+    base = Path(getattr(sys, "_base_executable", sys.executable))  # Python do sistema, não o de um venv
+    exe = base.with_name("pythonw.exe")  # sem janela de console
+    exe = exe if exe.exists() else base
     nome = "TerraForte-Lembrete-Token"
     cmd = (
         f"$a = New-ScheduledTaskAction -Execute '{exe}' "
@@ -273,6 +279,7 @@ def main() -> None:
         print(f"Imagens ({len(imagens)}): {', '.join(i.name for i in imagens)}")
         n_tags = len(re.findall(r"#\w+", caption))
         print(f"Legenda: {len(caption)} caracteres · {n_tags} hashtags")
+        print(f"Colaboradores: {', '.join('@' + c for c in COLABORADORES)}")
         print("\n".join(f"BLOQUEADO: {e}" for e in erros) or "OK — pronto para publicar.")
 
 
