@@ -16,7 +16,7 @@ Fluxo padrão: texto do post aprovado → `slides.html` → PNGs → revisão �
 ## Identidade fixa (não perguntar ao usuário)
 | Token | Valor | Uso |
 |---|---|---|
-| marrom | #522800 | capa, fundo principal, texto em fundo claro |
+| marrom | #522800 | fundo principal, texto em fundo claro (capa: rodízio, ver abaixo) |
 | amarelo | #FFCB2A | destaque de palavra, botão, números |
 | verde | #059734 | CTA, "como a Terra Forte faz" |
 | creme | #F6F1EA | slides de conteúdo (nunca branco puro) |
@@ -30,7 +30,29 @@ Fluxo padrão: texto do post aprovado → `slides.html` → PNGs → revisão �
 - Caminhos relativos a partir da pasta do post: `../../../../marca/logo.png`, `../../../../midia/campo/foto.jpg`.
 - Rodapé (logo + "2 / 6") em todos os slides menos capa e CTA.
 - Capa termina com "ARRASTE PARA O LADO →"; último slide não tem.
-- Alternar fundos (marrom → creme → creme → marrom/foto → verde → CTA) para dar ritmo.
+- Alternar fundos (capa → creme → creme → marrom/foto → verde → CTA) para dar ritmo.
+
+## Cor da capa (rodízio entre posts)
+A cor predominante do slide 1 **muda a cada post**, para o feed não ficar todo marrom.
+- Ordem fixa: **marrom → verde → amarelo → creme → marrom…**
+- Para saber a vez: abrir o `slides.html` do post anterior (pela data, em `posts/instagram/`), ver a classe da 1ª `<section>` e usar a próxima cor da ordem.
+- Capa com foto: a foto ocupa o topo e a cor da vez preenche a base (onde fica o texto).
+- Slide 2 nunca repete a cor da capa (capa creme → slide 2 marrom).
+
+| Capa | Título | Destaque | "Arraste" |
+|---|---|---|---|
+| marrom | branco | texto amarelo (`.dest`) | amarelo |
+| verde | branco | caixa amarela, texto marrom (`.dest-caixa`) | branco |
+| amarelo | marrom | caixa marrom, texto amarelo (`.dest-caixa`) | marrom |
+| creme | marrom | texto verde (`.dest-verde`) | verde |
+
+Amarelo sobre verde e verde sobre amarelo têm pouco contraste — por isso a caixa nesses dois casos.
+```css
+.amarelo { background:var(--amarelo); color:var(--marrom); }
+.dest-caixa { padding:0 14px; border-radius:10px; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+.verde .dest-caixa   { background:var(--amarelo); color:var(--marrom); }
+.amarelo .dest-caixa { background:var(--marrom); color:var(--amarelo); }
+```
 - Foto de fundo: `<img>` com `object-fit:cover` + camada escura `rgba(0,0,0,.45)` por cima; texto com `z-index` maior.
 - Ícones: SVG inline simples, traço 2.4, cor da marca. Nada de emoji na arte.
 
