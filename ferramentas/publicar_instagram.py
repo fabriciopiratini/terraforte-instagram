@@ -30,7 +30,7 @@ ENV = RAIZ / ".env"
 LOG = RAIZ / "ferramentas" / "publicacoes.log"
 HOST = "https://graph.instagram.com"
 # colaboradores fixos de todo post (máx. 3 pela API); cada um recebe convite e precisa aceitar
-COLABORADORES = ["fabricio_glucas", "milenamedeirosdemattos"]  # conta privada não pode ser colaboradora
+COLABORADORES = ["fabricio_glucas", "milenamedeirosdemattos", "lindassantos_"]  # conta privada não pode ser colaboradora
 
 LIMITE_LEGENDA = 2200
 LIMITE_HASHTAGS = 5   # regra do Instagram desde dez/2025
