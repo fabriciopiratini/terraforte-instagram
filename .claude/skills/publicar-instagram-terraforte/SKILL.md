@@ -23,6 +23,7 @@ description: Use esta skill para publicar ou agendar no Instagram da Terra Forte
 | `... <post.md> --publicar` | Publica agora |
 | `... <post.md> --agendar 2026-10-06T06:30` | **Não usar**: o painel já publica no horário (duas rotinas = risco de post em dobro) |
 | `... --testar` | Mostra a conta conectada e o uso da cota |
+| `... --configurar-drive` | Login único no Google para hospedar as imagens (abre o navegador) |
 | `... --renovar-token` | Renova o token por mais 60 dias e reagenda o lembrete |
 | `... --lembrete-token [dias]` | Agenda aviso na tela 7 dias antes de o token vencer (padrão: vence em 60 dias) |
 
@@ -33,9 +34,11 @@ O script:
   mais de 3 emojis, imagem fora de 1080x1350;
 - convida sempre os colaboradores fixos (`COLABORADORES` no script, máx. 3; cada um precisa aceitar o convite).
   Um @ inválido ou privado faz a API recusar o post inteiro ("Invalid user id");
-- converte para JPEG (único formato aceito pela API) e hospeda por **1 hora** no litterbox — só o tempo de a Meta baixar;
+- converte para JPEG (único formato aceito pela API) e sobe no **Google Drive** com link público, confere que o link
+  entrega a imagem e **apaga do Drive** ao terminar (publicado ou não). O litterbox foi abandonado em 21/10/2026
+  (erros 500/412/403 seguidos);
 - depois de publicar, muda o .md para `Status: publicado` e grava a data e o link;
-- registra tudo em `ferramentas/publicacoes.log`.
+- registra tudo em `ferramentas/publicacoes.log`, inclusive as falhas (`FALHA <post>: <motivo>`).
 
 ## Fluxo de publicação
 1. Rodar a verificação e mostrar o resultado ao usuário (número de imagens, tamanho da legenda, bloqueios).
@@ -71,9 +74,19 @@ Pré-requisito: Instagram da Terra Forte como conta **Profissional** (Empresa ou
 6. Claude roda `--lembrete-token` (tarefa `TerraForte-Lembrete-Token` no Agendador: caixa de aviso às 9h,
    7 dias antes de vencer, pedindo ao usuário que solicite "renovar token").
 
+### Google Drive (hospedagem das imagens) — o usuário faz, Claude orienta
+1. `console.cloud.google.com` com a conta **terrafortegeo@gmail.com** → criar projeto "TerraForte Publicador".
+2. **APIs e serviços → Biblioteca → Google Drive API → Ativar**.
+3. **Tela de permissão OAuth**: tipo **Externo**, nome do app e e-mail; escopo `drive.file`; depois
+   **Publicar app** (em "Teste" o login vence a cada 7 dias).
+4. **Credenciais → Criar → ID do cliente OAuth → App para computador** → baixar o JSON e salvar como
+   `google_cliente.json` na raiz do projeto (já no `.gitignore`; nunca ler nem exibir).
+5. Claude roda `--configurar-drive`; o usuário faz o login no navegador (aviso "app não verificado" →
+   Avançado → continuar). Gera `google_token.json` (também no `.gitignore`).
+
 ### Segurança do token (inegociável)
 - **Nunca** pedir para colar o token no chat. Se o usuário colar, avisar que ele deve gerar outro.
-- **Nunca** ler, exibir ou copiar o `.env` — só o script o lê.
+- **Nunca** ler, exibir ou copiar o `.env`, `google_cliente.json` ou `google_token.json` — só o script os lê.
 - O token vale 60 dias. Renovar com `--renovar-token` (precisa ter mais de 24h e não ter vencido).
   Se vencer, repetir os passos 2–4 e depois `--lembrete-token`.
   Token atual gerado em 06/10/2026 → vence ~05/12/2026 · lembrete em 28/11/2026.
@@ -83,5 +96,6 @@ Pré-requisito: Instagram da Terra Forte como conta **Profissional** (Empresa ou
 |---|---|---|
 | `Invalid OAuth access token` | Token vencido ou colado errado | Gerar novo token (passos 2–4) |
 | `Unsupported request` / versão | Versão da API desatualizada | Atualizar `META_API_VERSION` no `.env` |
-| `Media download has failed` | Meta não conseguiu baixar a imagem | Rodar de novo; se repetir, trocar o serviço de hospedagem no script |
+| `Media download has failed` | Meta não conseguiu baixar a imagem | Rodar de novo; ver no log se o link do Drive foi conferido |
+| `Google Drive não configurado` / `invalid_grant` | Falta login ou ele venceu (app em "Teste") | Publicar o app OAuth e rodar `--configurar-drive` |
 | `Application request limit reached` | Cota de 24h | Esperar; `--testar` mostra o uso |

@@ -29,6 +29,10 @@ RAIZ = Path(__file__).resolve().parent.parent
 ENV = RAIZ / ".env"
 LOG = RAIZ / "ferramentas" / "publicacoes.log"
 HOST = "https://graph.instagram.com"
+# imagens sobem para o Google Drive com link público só durante a publicação (apagadas depois)
+DRIVE_CLIENTE = RAIZ / "google_cliente.json"   # cliente OAuth "App para computador" do Google Cloud
+DRIVE_TOKEN = RAIZ / "google_token.json"       # gerado por --configurar-drive; nunca versionar
+DRIVE_ESCOPO = ["https://www.googleapis.com/auth/drive.file"]  # só enxerga os arquivos que o próprio script criou
 # colaboradores fixos de todo post (máx. 3 pela API); cada um recebe convite e precisa aceitar
 COLABORADORES = ["fabricio_glucas", "milenamedeirosdemattos", "lindassantos_"]  # conta privada não pode ser colaboradora
 
@@ -119,22 +123,56 @@ def montar_post(md: Path) -> tuple[str, list[Path], list[str]]:
     return caption, imagens, erros
 
 
-def hospedar(img: Path, tmp: Path) -> str:
-    """Converte para JPEG (único formato aceito pela API) e hospeda por 1 hora no litterbox."""
+def drive_token() -> str:
+    """Access token do Google Drive, renovado a partir do refresh token salvo em --configurar-drive."""
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    if not DRIVE_TOKEN.exists():
+        raise RuntimeError("Google Drive não configurado: rode publicar_instagram.py --configurar-drive.")
+    cred = Credentials.from_authorized_user_file(str(DRIVE_TOKEN), DRIVE_ESCOPO)
+    if not cred.valid:
+        cred.refresh(Request())
+        DRIVE_TOKEN.write_text(cred.to_json(), encoding="utf-8")
+    return cred.token
+
+
+def configurar_drive() -> None:
+    """Login único no Google (abre o navegador); grava o refresh token em DRIVE_TOKEN."""
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    if not DRIVE_CLIENTE.exists():
+        sys.exit(f"ERRO: falta {DRIVE_CLIENTE.name} (cliente OAuth do Google Cloud) na raiz do projeto.")
+    cred = InstalledAppFlow.from_client_secrets_file(str(DRIVE_CLIENTE), DRIVE_ESCOPO).run_local_server(port=0)
+    DRIVE_TOKEN.write_text(cred.to_json(), encoding="utf-8")
+    log("DRIVE configurado.")
+
+
+def hospedar(img: Path, tmp: Path, token: str) -> tuple[str, str]:
+    """Converte para JPEG (único formato aceito pela API) e sobe no Drive com link público; devolve (url, id)."""
     jpg = tmp / (img.stem + ".jpg")
     with Image.open(img) as im:
         im.convert("RGB").save(jpg, "JPEG", quality=95)
-    with jpg.open("rb") as f:
-        r = requests.post(
-            "https://litterbox.catbox.moe/resources/internals/api.php",
-            data={"reqtype": "fileupload", "time": "1h"},
-            files={"fileToUpload": (jpg.name, f, "image/jpeg")},
-            timeout=120,
-        )
-    url = r.text.strip()
-    if not url.startswith("https://"):
-        raise RuntimeError(f"Falha ao hospedar {img.name}: {url[:200]}")
-    return url
+    auth = {"Authorization": f"Bearer {token}"}
+    meta = json.dumps({"name": f"terraforte-{img.parent.name}-{jpg.name}"})
+    r = requests.post(
+        "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", headers=auth, timeout=120,
+        files={"metadata": (None, meta, "application/json"), "file": (jpg.name, jpg.read_bytes(), "image/jpeg")},
+    )
+    r.raise_for_status()
+    fid = r.json()["id"]
+    requests.post(f"https://www.googleapis.com/drive/v3/files/{fid}/permissions", headers=auth, timeout=60,
+                  json={"role": "reader", "type": "anyone"}).raise_for_status()
+    url = f"https://drive.usercontent.google.com/download?id={fid}&export=view"
+    teste = requests.get(url, timeout=60)  # confere que o link público entrega a imagem antes de passar à Meta
+    if teste.status_code != 200 or not teste.headers.get("Content-Type", "").startswith("image/"):
+        raise RuntimeError(f"Link do Drive de {img.name} não entrega a imagem ({teste.status_code}).")
+    return url, fid
+
+
+def apagar_do_drive(ids: list[str], token: str) -> None:
+    """Depois de publicar (ou falhar), tira as imagens do Drive — o Instagram guarda a cópia dele."""
+    for fid in ids:
+        requests.delete(f"https://www.googleapis.com/drive/v3/files/{fid}",
+                        headers={"Authorization": f"Bearer {token}"}, timeout=60)
 
 
 def aguardar(container: str) -> None:
@@ -155,22 +193,35 @@ def publicar(md: Path) -> None:
             log(f"BLOQUEADO {md.name}: {e}")
         sys.exit(1)
 
-    ig_id = api("GET", "me", fields="user_id")["user_id"]
-    with tempfile.TemporaryDirectory() as t:
-        urls = [hospedar(img, Path(t)) for img in imagens]
-    if len(urls) == 1:
-        container = api("POST", f"{ig_id}/media", image_url=urls[0], caption=caption,
-                        collaborators=json.dumps(COLABORADORES))["id"]
-    else:
-        filhos = [api("POST", f"{ig_id}/media", image_url=u, is_carousel_item="true")["id"] for u in urls]
-        for c in filhos:
-            aguardar(c)
-        container = api("POST", f"{ig_id}/media", media_type="CAROUSEL",
-                        children=",".join(filhos), caption=caption,
-                        collaborators=json.dumps(COLABORADORES))["id"]
-    aguardar(container)
-    media_id = api("POST", f"{ig_id}/media_publish", creation_id=container)["id"]
-    link = api("GET", media_id, fields="permalink").get("permalink", media_id)
+    ids: list[str] = []
+    try:
+        ig_id = api("GET", "me", fields="user_id")["user_id"]
+        token = drive_token()
+        with tempfile.TemporaryDirectory() as t:
+            urls = []
+            for img in imagens:
+                url, fid = hospedar(img, Path(t), token)
+                urls.append(url)
+                ids.append(fid)
+        if len(urls) == 1:
+            container = api("POST", f"{ig_id}/media", image_url=urls[0], caption=caption,
+                            collaborators=json.dumps(COLABORADORES))["id"]
+        else:
+            filhos = [api("POST", f"{ig_id}/media", image_url=u, is_carousel_item="true")["id"] for u in urls]
+            for c in filhos:
+                aguardar(c)
+            container = api("POST", f"{ig_id}/media", media_type="CAROUSEL",
+                            children=",".join(filhos), caption=caption,
+                            collaborators=json.dumps(COLABORADORES))["id"]
+        aguardar(container)
+        media_id = api("POST", f"{ig_id}/media_publish", creation_id=container)["id"]
+        link = api("GET", media_id, fields="permalink").get("permalink", media_id)
+    except Exception as e:  # noqa: BLE001 — registra a falha no log (antes só aparecia na tela)
+        log(f"FALHA {md.name}: {e}")
+        sys.exit(1)
+    finally:
+        if ids:
+            apagar_do_drive(ids, drive_token())
 
     texto = md.read_text(encoding="utf-8")
     texto = re.sub(r"^Status:\s*aprovado", "Status: publicado", texto, count=1, flags=re.M)
@@ -241,12 +292,16 @@ def main() -> None:
     p.add_argument("--agendar", metavar="AAAA-MM-DDTHH:MM")
     p.add_argument("--testar", action="store_true")
     p.add_argument("--renovar-token", action="store_true")
+    p.add_argument("--configurar-drive", action="store_true")
     p.add_argument("--lembrete-token", nargs="?", const=60, type=int, metavar="DIAS_ATE_VENCER")
     p.add_argument("--aviso-token", action="store_true", help=argparse.SUPPRESS)
     a = p.parse_args()
 
     if a.aviso_token:
         aviso_token()
+        return
+    if a.configurar_drive:
+        configurar_drive()
         return
     if a.lembrete_token:
         lembrete_token(a.lembrete_token)

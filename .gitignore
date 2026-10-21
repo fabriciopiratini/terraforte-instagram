@@ -19,3 +19,7 @@ desktop.ini
 posts/**/*.png
 midia/
 ~$*
+
+# Google Drive (hospedagem das imagens do Instagram)
+google_cliente.json
+google_token.json
