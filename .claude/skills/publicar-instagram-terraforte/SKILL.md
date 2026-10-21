@@ -81,7 +81,11 @@ Pré-requisito: Instagram da Terra Forte como conta **Profissional** (Empresa ou
 1. `console.cloud.google.com` com a conta **terrafortegeo@gmail.com** → criar projeto "TerraForte Publicador".
 2. **APIs e serviços → Biblioteca → Google Drive API → Ativar**.
 3. **Tela de permissão OAuth**: tipo **Externo**, nome do app e e-mail; escopo `drive.file`; depois
-   **Publicar app** (em "Teste" o login vence a cada 7 dias).
+   **Publicar app** (em "Teste" o login vence a cada 7 dias). Publicar exige página inicial e política de
+   privacidade no Branding: `https://fabriciopiratini.github.io/terraforte-publicador/` e `.../privacidade.html`
+   (repositório público `fabriciopiratini/terraforte-publicador`, GitHub Pages). O aviso "precisa ser verificado"
+   pode ser ignorado: `drive.file` não é escopo sensível. Projeto Google Cloud: `terraforte-publicador`
+   (em produção desde 21/10/2026).
 4. **Credenciais → Criar → ID do cliente OAuth → App para computador** → baixar o JSON e salvar como
    `google_cliente.json` na raiz do projeto (já no `.gitignore`; nunca ler nem exibir).
 5. Claude roda `--configurar-drive`; o usuário faz o login no navegador (aviso "app não verificado" →
