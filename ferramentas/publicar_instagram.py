@@ -34,7 +34,8 @@ DRIVE_CLIENTE = RAIZ / "google_cliente.json"   # cliente OAuth "App para computa
 DRIVE_TOKEN = RAIZ / "google_token.json"       # gerado por --configurar-drive; nunca versionar
 DRIVE_ESCOPO = ["https://www.googleapis.com/auth/drive.file"]  # só enxerga os arquivos que o próprio script criou
 # colaboradores fixos de todo post (máx. 3 pela API); cada um recebe convite e precisa aceitar
-COLABORADORES = ["fabricio_glucas", "milenamedeirosdemattos", "lindassantos_"]  # conta privada não pode ser colaboradora
+COLABORADORES = ["fabricio_glucas", "milenamedeirosdemattos"]  # conta privada não pode ser colaboradora
+# @lindassantos_ retirada em 21/10/2026: recusada pela API ("Invalid user id")
 
 LIMITE_LEGENDA = 2200
 LIMITE_HASHTAGS = 5   # regra do Instagram desde dez/2025
@@ -186,6 +187,18 @@ def aguardar(container: str) -> None:
     raise RuntimeError(f"Container {container} não ficou pronto em 2 minutos.")
 
 
+def colaboradores_validos(ig_id: str, url: str) -> list[str]:
+    """Testa cada colaborador num container avulso (nunca publicado) e devolve só os aceitos pela API."""
+    validos = []
+    for c in COLABORADORES:
+        try:
+            api("POST", f"{ig_id}/media", image_url=url, caption="teste", collaborators=json.dumps([c]))
+            validos.append(c)
+        except RuntimeError as e:
+            log(f"AVISO colaborador @{c} recusado ({e}) — post segue sem ele")
+    return validos
+
+
 def publicar(md: Path) -> None:
     caption, imagens, erros = montar_post(md)
     if erros:
@@ -204,15 +217,22 @@ def publicar(md: Path) -> None:
                 urls.append(url)
                 ids.append(fid)
         if len(urls) == 1:
-            container = api("POST", f"{ig_id}/media", image_url=urls[0], caption=caption,
-                            collaborators=json.dumps(COLABORADORES))["id"]
+            dados = {"image_url": urls[0]}
         else:
             filhos = [api("POST", f"{ig_id}/media", image_url=u, is_carousel_item="true")["id"] for u in urls]
             for c in filhos:
                 aguardar(c)
-            container = api("POST", f"{ig_id}/media", media_type="CAROUSEL",
-                            children=",".join(filhos), caption=caption,
-                            collaborators=json.dumps(COLABORADORES))["id"]
+            dados = {"media_type": "CAROUSEL", "children": ",".join(filhos)}
+        try:
+            container = api("POST", f"{ig_id}/media", caption=caption,
+                            collaborators=json.dumps(COLABORADORES), **dados)["id"]
+        except RuntimeError as e:
+            if "Invalid user id" not in str(e):
+                raise
+            # um @ recusado derruba o post inteiro: publica só com os colaboradores aceitos
+            validos = colaboradores_validos(ig_id, urls[0])
+            container = api("POST", f"{ig_id}/media", caption=caption,
+                            collaborators=json.dumps(validos), **dados)["id"]
         aguardar(container)
         media_id = api("POST", f"{ig_id}/media_publish", creation_id=container)["id"]
         link = api("GET", media_id, fields="permalink").get("permalink", media_id)

@@ -33,7 +33,9 @@ O script:
 - bloqueia se: status ≠ aprovado, legenda > 2.200 caracteres, **mais de 5 hashtags** (limite do Instagram),
   mais de 3 emojis, imagem fora de 1080x1350;
 - convida sempre os colaboradores fixos (`COLABORADORES` no script, máx. 3; cada um precisa aceitar o convite).
-  Um @ inválido ou privado faz a API recusar o post inteiro ("Invalid user id");
+  Um @ inválido ou privado faz a API recusar o post ("Invalid user id"): o script então testa cada colaborador,
+  publica só com os aceitos e grava `AVISO colaborador @x recusado` no log — tirar o @ da lista depois.
+  @lindassantos_ foi retirada em 21/10/2026 por esse erro (voltar quando a conta dela for pública e passar no teste);
 - converte para JPEG (único formato aceito pela API) e sobe no **Google Drive** com link público, confere que o link
   entrega a imagem e **apaga do Drive** ao terminar (publicado ou não). O litterbox foi abandonado em 21/10/2026
   (erros 500/412/403 seguidos);
