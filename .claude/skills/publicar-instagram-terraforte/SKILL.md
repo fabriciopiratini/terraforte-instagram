@@ -46,7 +46,8 @@ O script:
 1. Rodar a verificação e mostrar o resultado ao usuário (número de imagens, tamanho da legenda, bloqueios).
 2. Corrigir bloqueios (ex.: cortar hashtags) — mudanças de texto voltam para aprovação.
 3. Com o "pode publicar" do usuário: status → aprovado → `--publicar` (agora) ou só deixar aprovado
-   (o painel publica no horário do campo Data — terça 6h30 · quinta 19h; a Data precisa ter a hora, ex. `19h`).
+   (o painel publica no horário do campo Data — **terça e quinta às 17h**, enquanto o PC do escritório está ligado;
+   a Data precisa ter a hora, ex. `17h`).
 4. Informar o link. Agendamento pelo painel (`ferramentas/painel.py`, tarefa `TerraForte-Painel`):
    - botão **Publicar** → publica na hora;
    - sem clique → publica sozinho no horário (até 10 min de atraso);

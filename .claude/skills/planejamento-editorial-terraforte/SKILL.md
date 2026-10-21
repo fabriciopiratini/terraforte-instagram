@@ -109,4 +109,6 @@ Com base no público rural da região sul do RS:
 - **Almoço:** 11h30-12h30 (pausa do meio-dia)
 - **Noite:** 19h-20h (após o trabalho do dia)
 
-Priorizar: manhã para conteúdo educativo, noite para conteúdo institucional.
+**Horário padrão em uso: terça e quinta às 17h** (decidido em 21/10/2026). A publicação automática roda no PC do
+escritório, que é suspenso no fim do expediente; 6h30 e 19h caíam com o PC desligado e o post não saía.
+Campo Data dos posts: `AAAA-MM-DD (terça, 17h)`.
